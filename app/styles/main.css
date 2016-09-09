@@ -1,0 +1,12 @@
+div.row > div{
+    display: inline-block;
+    float: none!important;
+    vertical-align: middle;
+}
+p{
+    margin-bottom:0;
+}
+.panel-done .panel-heading p{
+    text-decoration: line-through!important;
+    color: #777!important;
+}

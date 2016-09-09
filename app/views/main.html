@@ -1,0 +1,95 @@
+<br>
+<div class="col-md-3">
+    <h2>Filter by:</h2>
+    <div class="form-group">
+        <label for="taskStatus">По типу</label>
+        <select class="form-control" data-ng-model="filter.taskStatus" id="taskStatus" ng-required="required">
+            <option value="">-- choose type --</option>
+            <option value="1">Открытые</option>
+            <option value="2">Просроченые</option>
+            <option value="3">Закрытые</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="filterDeadline">По дате окончания</label>
+        <input type="date" data-ng-model="filter.deadline" id="filterDeadline" class="form-control" ng-required="required">
+    </div>
+    <div class="form-group">
+        <label for="filterPriority">По приоритету</label>
+        <select class="form-control" data-ng-model="filter.priority" id="filterPriority">
+            <option value="">-- choose priority --</option>
+            <option value="1">Открытые</option>
+            <option value="2">Просроченые</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" data-ng-model="filter.withoutCom"> Without comments
+            </label>
+        </div>
+    </div>
+</div>
+<div class="col-md-9">
+    <div class="panel-group">
+        <a ng-href="/#/add" class="btn btn-primary">Добавить Таск</a>
+    </div>
+    <div class="panel-group">
+        <div class="panel" data-ng-class="task.closed ? 'panel-default panel-done' : ( task.priority == '1' ? 'panel-danger' : 'panel-default')" data-ng-repeat="task in main.tasks() track by $index">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <p>{{task.id + 1}}.</p>
+                    </div>
+                    <div class="col-sm-1">
+                        <p class="text-center text-danger" data-ng-show="task.priority == '1'">
+                            <i class="glyphicon glyphicon-fire"></i>
+                        </p>
+                    </div>
+                    <div class="col-sm-2">
+                        <p data-ng-bind="task.deadline | date: 'dd-MM-yyyy'"></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="text-primary" data-ng-bind="task.taskTitle"></p>
+                    </div>
+                    <div class="btn-group">
+                        <a href="/#/edit/:{{task.id}}" class="btn btn-default btn-xs" title="Редактировать">
+                            <i class="text-primary glyphicon glyphicon-edit"></i>
+                        </a>
+                        <button class="btn btn-default btn-xs" data-ng-click="main.taskActions.closeTask(task.id)" title="Закрыть">
+                            <i class="text-danger glyphicon glyphicon-remove"></i>
+                        </button>
+                        <a href="/#/add/:{{task.id}}" class="btn btn-default btn-xs" data-ng-click="" title="Дублировать таск" ng-if="task.closed">
+                            <i class="text-success glyphicon glyphicon-plus"></i>
+                        </a>
+                        <button class="btn btn-default btn-xs" data-ng-click="main.taskActions.openTask(task.id)" title="Открыть">
+                            <i data-ng-class="task.opened ? 'glyphicon glyphicon-menu-up' : 'glyphicon glyphicon-menu-down'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body" data-ng-class="task.opened ? '' : 'hidden'">
+                <p class="text-muted" data-ng-bind="task.taskText"></p>
+            </div>
+            <div class="panel-footer" data-ng-class="task.opened ? '' : 'hidden'">
+                <div data-ng-show="task.comments.length == 0" class="text-center alert alert-warning">Комментариев нет</div>
+                <div class="alert alert-warning" data-ng-repeat="comment in task.comments">
+                    <button type="button" class="close pull-right" title="Удалить" data-dismiss="alert" aria-label="Close" data-ng-click="main.commentActions.removeComment($parent.$index, $index)"><span aria-hidden="true">&times;</span></button>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <p class="text-warning" data-ng-bind="comment.date | date: 'dd-MM-yyyy'"></p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted" data-ng-bind="comment.text"></p>
+                        </div>
+                    </div>
+                </div>
+                <textarea data-ng-model="task.textComment" name="" id="" cols="30" rows="3" class="form-control"></textarea>
+                <button class="btn btn-primary" data-ng-click="main.commentActions.pushComment($index, task.textComment);">Добавить коммент</button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-group">
+        <button type="submit" class="btn btn-danger" data-ng-click="main.taskActions.clearTasks()">Clear All Tasks</button>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><span ng-if="view == 'add' || view == 'duplicate'">Добавление задания</span><span  ng-if="view == 'edit'">Редактирование задания</span></div>
+    <div class="panel-body">
+        <div class="form-group">
+            <label for="taskTitle">Название задания</label>
+            <input type="text" class="form-control" data-ng-model="newtask.taskTitle" id="taskTitle" placeholder="Название задания" ng-required="required">
+        </div>
+        <div class="form-group">
+            <label for="taskText">Текст задания</label>
+            <textarea class="form-control" data-ng-model="newtask.taskText" id="taskText" placeholder="Текст задания" ng-required="required"></textarea>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <select class="form-control" data-ng-model="newtask.priority" ng-required="required">
+                        <option value="">-- choose priority --</option>
+                        <option value="1">High</option>
+                        <option value="2">Normal</option>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <input type="date" data-ng-model="newtask.deadline" class="form-control" ng-required="required">
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-default" data-ng-click="main.taskActions.pushTask(newtask)" ng-if="view == 'add'">Добавить</button>
+        <button class="btn btn-default" data-ng-click="main.taskActions.duplicateTask(newtask)" ng-if="view == 'duplicate'">Добавить</button>
+        <button class="btn btn-success" data-ng-click="main.taskActions.saveTask(newtask)" ng-if="view == 'edit'">Сохранить</button>
+        <a class="btn btn-primary pull-right" href="/#/">Назад</a>
+    </div>
+</div>
