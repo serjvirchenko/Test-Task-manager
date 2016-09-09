@@ -10,3 +10,6 @@ p{
     text-decoration: line-through!important;
     color: #777!important;
 }
+.active .hidden{
+    display: inline-block!important;
+}

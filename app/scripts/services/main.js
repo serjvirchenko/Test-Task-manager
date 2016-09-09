@@ -23,6 +23,7 @@ angular.module('appApp')
                         $localStorage.tasks = [];
                     }
                     obj.id = $localStorage.tasks.length;
+                    obj.closed = false;
                     $timeout(function(){
                         $localStorage.tasks.push(obj);
                         $location.path('/');

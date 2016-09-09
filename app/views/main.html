@@ -5,9 +5,9 @@
         <label for="taskStatus">По типу</label>
         <select class="form-control" data-ng-model="filter.taskStatus" id="taskStatus" ng-required="required">
             <option value="">-- choose type --</option>
-            <option value="1">Открытые</option>
-            <option value="2">Просроченые</option>
-            <option value="3">Закрытые</option>
+            <option value="0">Открытые</option>
+            <option value="1">Закрытые</option>
+            <option value="2">Просроченные</option>
         </select>
     </div>
     <div class="form-group">
@@ -18,8 +18,8 @@
         <label for="filterPriority">По приоритету</label>
         <select class="form-control" data-ng-model="filter.priority" id="filterPriority">
             <option value="">-- choose priority --</option>
-            <option value="1">Открытые</option>
-            <option value="2">Просроченые</option>
+            <option value="1">High</option>
+            <option value="2">Normal</option>
         </select>
     </div>
     <div class="form-group">
@@ -35,7 +35,7 @@
         <a ng-href="/#/add" class="btn btn-primary">Добавить Таск</a>
     </div>
     <div class="panel-group">
-        <div class="panel" data-ng-class="task.closed ? 'panel-default panel-done' : ( task.priority == '1' ? 'panel-danger' : 'panel-default')" data-ng-repeat="task in main.tasks() track by $index">
+        <div class="panel" data-ng-class="task.closed ? 'panel-default panel-done' : ( task.priority == '1' ? 'panel-danger' : 'panel-default')" data-ng-repeat="task in main.tasks() | commFilter:filter.withoutCom | priorityFilter:filter.priority | dateFilter:filter.deadline | closedFilter:filter.taskStatus track by $index">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-sm-1">
@@ -47,7 +47,7 @@
                         </p>
                     </div>
                     <div class="col-sm-2">
-                        <p data-ng-bind="task.deadline | date: 'dd-MM-yyyy'"></p>
+                        <p deadline="{{task.deadline}}">{{task.deadline | date: 'dd-MM-yyyy'}} <i class="glyphicon glyphicon-exclamation-sign text-danger hidden"></i></p>
                     </div>
                     <div class="col-sm-6">
                         <p class="text-primary" data-ng-bind="task.taskTitle"></p>
@@ -72,7 +72,7 @@
                 <p class="text-muted" data-ng-bind="task.taskText"></p>
             </div>
             <div class="panel-footer" data-ng-class="task.opened ? '' : 'hidden'">
-                <div data-ng-show="task.comments.length == 0" class="text-center alert alert-warning">Комментариев нет</div>
+                <div data-ng-show="task.comments.length == 0 || !task.comments" class="text-center alert alert-warning">Комментариев нет</div>
                 <div class="alert alert-warning" data-ng-repeat="comment in task.comments">
                     <button type="button" class="close pull-right" title="Удалить" data-dismiss="alert" aria-label="Close" data-ng-click="main.commentActions.removeComment($parent.$index, $index)"><span aria-hidden="true">&times;</span></button>
                     <div class="row">
@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <textarea data-ng-model="task.textComment" name="" id="" cols="30" rows="3" class="form-control"></textarea>
-                <button class="btn btn-primary" data-ng-click="main.commentActions.pushComment($index, task.textComment);">Добавить коммент</button>
+                <button class="btn btn-primary" data-ng-click="pushComment($index, task.textComment)">Добавить коммент</button>
             </div>
         </div>
     </div>

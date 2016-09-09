@@ -10,6 +10,8 @@
 angular.module('appApp')
     .controller('EditCtrl', function ($scope, $routeParams, main) {
 
+        $scope.currDate = new Date();
+
         var newtask = angular.copy(main.taskActions.editTask($routeParams.id));
 
         $scope.view = 'edit';

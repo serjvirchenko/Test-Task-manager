@@ -19,7 +19,7 @@
                     </select>
                 </div>
                 <div class="col-sm-6">
-                    <input type="date" data-ng-model="newtask.deadline" class="form-control" ng-required="required">
+                    <input type="date" data-ng-model="newtask.deadline" min="{{currDate | date:'yyyy-MM-dd'}}" class="form-control" ng-required="required">
                 </div>
             </div>
         </div>
